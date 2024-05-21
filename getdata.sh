@@ -10,6 +10,7 @@ curl -o metadata_kcore_csv.gz https://datarepo.eng.ucsd.edu/mcauley_group/gdrive
 echo "metadata download complete" 
 
 #Unzip both files 
-
-gunzip metdata_kcore_csv.gz 
+echo "unzipping metadata"
+gunzip metadata_kcore_csv.gz 
+echo "unzipping reviews"
 gunzip reviews_kcore_json.gz 
