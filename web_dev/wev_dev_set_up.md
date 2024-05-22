@@ -32,4 +32,7 @@
    * Dockerize application: https://tasnuva2606.medium.com/dockerize-flask-app-4998a378a6aa 
 
 
+## Examples:
+   * SQL with flask: https://www.ffnext.io/blog/python-backend-with-flask-for-beginners
+
 
