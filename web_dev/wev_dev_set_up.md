@@ -1,0 +1,35 @@
+# Requirement 
+-- Flask
+
+--React: https://react.dev/
+
+--Heroku ($\textcolor{green}{\text{account setup, needs payment to start with new application deployment serup}}$)
+  * Example deployment Flask with Heroku: https://realpython.com/flask-by-example-part-1-project-setup/#deploying-the-application-to-heroku $\textcolor{green}{\text{(didn't finish pipeline part)}}$
+
+-- Google cloud platform (Google app Engine)
+
+--AWS (Amazon web services (further in future))
+
+## Flask URL deployment (Routing):
+-- create basic and dynamic routes;
+
+-- map URL with different functionalities
+
+-- (https://www.sitepoint.com/flask-url-routing/) handle various requests types + produce appropriate responses based on user requests;
+
+-- customer requests URL; (enter the web link to render the function)
+
+--bluenprint is better than app.route(), remember to register them based on needs;
+
+
+## Gateway and web server: 
+-- https://faun.pub/deploy-flask-app-with-nginx-using-gunicorn-7fda4f50066a 
+   ### Architecture:
+   ![Architecture](image.png)
+
+   * Gunicorn: WSGI server
+   * Nginx: Reverse proxy, HTTP cache, and load balancer
+   * Dockerize application: https://tasnuva2606.medium.com/dockerize-flask-app-4998a378a6aa 
+
+
+
