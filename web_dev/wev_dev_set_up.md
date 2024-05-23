@@ -30,7 +30,8 @@
 -- to LLM model
 
 ### $\textcolor{orange}{\text{Frontend to Backend connection Examples}}$
-
+-- https://medium.com/@t.d.benard91/turning-chatgpt-into-a-rag-machine-connecting-chatgpt-via-apis-to-your-vector-database-b8f7242971d4
+![Architecture](RAG_workflow.png)
 
 
 
