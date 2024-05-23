@@ -30,8 +30,16 @@
 -- to LLM model
 
 ### $\textcolor{orange}{\text{Frontend to Backend connection Examples}}$
+(&check; indicates importance)
+
 -- https://medium.com/@t.d.benard91/turning-chatgpt-into-a-rag-machine-connecting-chatgpt-via-apis-to-your-vector-database-b8f7242971d4
 ![Architecture](RAG_workflow.png)
+
+-- &check; https://medium.com/@ranadevrat/creating-a-chatbot-using-open-source-llm-and-rag-technology-with-lang-chain-and-flask-ca2f5511e82e
+   
+   >-- &check; https://medium.com/@ranadevrat/build-a-chatbot-with-advance-rag-system-with-llamaindex-opensource-llm-flask-and-langchain-1bf875be3ec6
+
+-- https://shwinda.medium.com/build-a-full-stack-llm-application-with-openai-flask-react-and-pinecone-part-2-ceda4e290c33
 
 
 
