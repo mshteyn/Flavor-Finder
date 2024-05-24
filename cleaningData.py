@@ -67,7 +67,7 @@ for chunk in pd.read_json(reviews_path, lines=True, chunksize=chunk_size):
     #dropping reviews with no text\
     chunk['text'] = chunk['text'].str.replace('[^A-Za-z0-9]', ' ', flags=re.UNICODE)
     chunk = chunk.dropna(subset=['text'])
-    chunk = chunk[chunk['text'].str.len()>=10] #more than 10 chars review
+    chunk = chunk[chunk['text'].str.len()>=100] #keep reviews > 100 characters
     #pdb.set_trace()
     #filtering reviews of restaurants\
     chunk = chunk[chunk['gmap_id'].isin(metadataDF['gmap_id'])]
