@@ -7,6 +7,7 @@ Flavor Finder helps you Find your Favorite Flavor
 Our main goal is the implementation of RAG informed by a database of user reviews 
 to create a restaurant-specific recommendation system.
 
+
 ##Introduction
 
 Traditionally, recommendation systems have been employed not only to drive commercial 
@@ -35,8 +36,28 @@ more accurate and reliable recommendations, ultimately benefiting users by savin
 reducing decision fatigue, and increasing satisfaction with their dining choices.
 
 
-##Data Collection
+##Data Collection & Cleaning
 
+
+
+###Filter Restaurant Reviews
+
+Reviews were filtered based on high ratings, specifically considering only 4 or 5-star 
+reviews to reduce noise. The original review database was processed in chunks to prevent 
+RAM issues. The current database (~3.5GB) contains approximately 12 million reviews from 
+around 70,000 restaurants.
+
+###Remove Irrelevant Reviews
+
+Short and excessively long reviews were considered for removal to maintain consistency 
+and relevance.
+
+###Focus on Food-Related Mentions
+
+To increase the signal-to-noise ratio, reviews that specifically mention food items were 
+selected. A Named Entity Recognition (NER) model (InstaFoodRoBERTa-NER) was employed to 
+identify and filter reviews mentioning food items. This model performed well but was 
+computationally intensive.
 
 
 ##Exploratory Data Analysis
@@ -49,6 +70,9 @@ reducing decision fatigue, and increasing satisfaction with their dining choices
 
 ##Challenges
 
+Running some of the models on personal devices took too long to process 100,000 reviews, 
+indicating the need for more powerful computational resources or distributed processing 
+among multiple machines.
 
 
 ##Conclusion
