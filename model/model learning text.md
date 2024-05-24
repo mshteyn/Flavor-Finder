@@ -25,8 +25,13 @@ Speed; efficiency;
 
 
 
-Performance metrics: (metric choice)
+Performance metrics: (metric choice & visualization)
 1.	Evaluate LLM’s effectiveness and accuracy in handling queries;
 ![past project metric example](image.png)
+2. visualization:
+* PCA: linear;
+* t-NSE: nonlinear;
+https://medium.com/@violante.andre/an-introduction-to-t-sne-with-python-example-47e6ae7dc58f 
+
 Updates:
 1.	LanceDB installed;
