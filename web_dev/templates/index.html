@@ -1,6 +1,6 @@
-<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 
 <!DOCTYPE html>
 <html>
@@ -38,16 +38,14 @@
 							<form id="messageArea" class="input-group">
                                 <input type="text" id="text" name="msg" placeholder="Start with a restaurant..." autocomplete="off" class="form-control type_msg" required/>
 								<div class="input-group-append">
-									<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+									<button type="submit" id="send1" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+								</div>
+								<div class="input-group-append">
+									<button type="submit" id="send2" class="input-group-text send_btn">Change Restaurant</button>
 								</div>
 							</form>
 
-							<form id="queryArea" class="input-group">
-                                <input type="text" id="text" name="msg" placeholder="Please enter your dish query..." autocomplete="off" class="form-control type_msg" required/>
-								<div class="input-group-append">
-									<button type="submit1" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
-								</div>
-							</form>
+					
 						</div>
 					</div>
 				</div>
@@ -55,58 +53,84 @@
 		</div>
 		
 		<script>
+			var i=-1;
+			var j=0;
 			$(document).ready(function() {
-			  function sendMessage(event, formId, url) {
-				event.preventDefault();
 		
-				const date = new Date();
-				const hour = date.getHours();
-				const minute = date.getMinutes();
-				const str_time = hour + ":" + minute;
-				var rawText = $(`#${formId} input[type="text"]`).val();
+				// // Set the placeholder based on the value of i
+				// if (i !== 0) {
+				// 	$("#text").attr("placeholder", "Please enter your dish query...");
+				// } else {
+				// 	$("#text").attr("placeholder", "Please enter a restaurant...");
+				// }
 		
-				var userHtml = `<div class="d-flex justify-content-end mb-4">
-								  <div class="msg_cotainer_send">
-									${rawText}
-									<span class="msg_time_send">${str_time}</span>
-								  </div>
-								  <div class="img_cont_msg">
-									<img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg">
-								  </div>
-								</div>`;
+				// Function to send message
+				function sendMessage(event, formId, url) {
+					event.preventDefault();
 		
-				$(`#${formId} input[type="text"]`).val("");
-				$("#messageFormeight").append(userHtml);
+					const date = new Date();
+					const hour = date.getHours();
+					const minute = date.getMinutes();
+					const str_time = hour + ":" + minute;
+					var rawText = $("#" + formId + " input[type='text']").val();
 		
-				$.ajax({
-				  data: {
-					msg: rawText
-				  },
-				  type: "POST",
-				  url: url
-				}).done(function(data) {
-				  var botHtml = `<div class="d-flex justify-content-start mb-4">
-								   <div class="img_cont_msg">
-									 <img src="/static/images/dish_icon.png" class="rounded-circle user_img_msg">
-								   </div>
-								   <div class="msg_cotainer">
-									 ${data}
-									 <span class="msg_time">${str_time}</span>
-								   </div>
-								 </div>`;
-				  $("#messageFormeight").append($.parseHTML(botHtml));
+					var userHtml = `<div class="d-flex justify-content-end mb-4">
+										  <div class="msg_cotainer_send">
+											${rawText}
+											<span class="msg_time_send">${str_time}</span>
+										  </div>
+										  <div class="img_cont_msg">
+											<img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg">
+										  </div>
+										</div>`;
+		
+					$("#" + formId + " input[type='text']").val("");
+					$("#messageFormeight").append(userHtml);
+		
+					$.ajax({
+						data: {
+							msg: rawText
+						},
+						type: "POST",
+						url: url
+					}).done(function(data) {
+						var botHtml = `<div class="d-flex justify-content-start mb-4">
+										   <div class="img_cont_msg">
+											 <img src="/static/images/dish_icon.png" class="rounded-circle user_img_msg">
+										   </div>
+										   <div class="msg_cotainer">
+											 ${data}
+											 <span class="msg_time">${str_time}</span>
+										   </div>
+										 </div>`;
+						$("#messageFormeight").append($.parseHTML(botHtml));
+					});
+				}
+		
+				// Click event for send1 button
+				$("#send1").click(function(event) {
+					if (i===-1 && j===0) {sendMessage(event, "messageArea", "/get_restaurant"); 
+						$("#text").attr("placeholder", "Please enter your dish query..."); i+=1;}
+					else if (i !==-1) {
+						sendMessage(event, "messageArea", "/get_request"); 
+						$("#text").attr("placeholder", "Please enter your dish query...");
+						
+					} else {
+						sendMessage(event, "messageArea", "/get_restaurant");
+						$("#text").attr("placeholder", "Please enter a restaurant..."); i+=1;
+					}
 				});
-			  }
 		
-			  $("#messageArea").on("submit", function(event) {
-				sendMessage(event, "messageArea", "/get_restaurant");
-			  });
-		
-			  $("#queryArea").on("submit", function(event) {
-				sendMessage(event, "queryArea", "/get_request");
-			  });
+				// Click event for send2 button
+				$("#send2").click(function(event) {
+						
+							i = -1; // Reset the local variable
+							$("#text").attr("placeholder", "Please enter a restaurant...");
+	
+					
+				});
 			});
-		  </script>
+		</script>
         
     </body>
 </html>
