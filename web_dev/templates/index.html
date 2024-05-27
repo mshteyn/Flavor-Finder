@@ -75,14 +75,15 @@
 						type: "POST",
 						url: "/get_restaurant",
 					}).done(function(data) {
-						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="/static/images/dish_icon.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + 'Please give your dish query' + '<span class="msg_time">' + str_time + '</span></div></div>';
+						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="/static/images/dish_icon.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + '<p>'+'Please give your dish query'+'</p>'+ '<span class="msg_time">' + str_time + '</span></div></div>';
 						$("#messageFormeight").append($.parseHTML(botHtml));
 					});
 					event.preventDefault();
 				});
 			});
+		</script>
 
-
+		<script>
 			$(document).ready(function() {
 				$("#queryArea").on("submit", function(event) {
 					const date = new Date();
