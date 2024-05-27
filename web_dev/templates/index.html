@@ -101,7 +101,7 @@
 							msg: rawText,	
 						},
 						type: "POST",
-						url: "/get_query",
+						url: "/get_request",
 					}).done(function(data) {
 						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="/static/images/dish_icon.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
 						$("#messageFormeight").append($.parseHTML(botHtml));
