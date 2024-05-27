@@ -1,39 +1,28 @@
 # Flavor-Finder
 
-# TEAM FLAVOR FINDER: Recommending Restaurant Dishes
+# FLAVOR FINDER: A Restaurant-Based Dish Reccomendation System
 
-Flavor Finder helps you Find your Favorite Flavor
-
-Our main goal is the implementation of RAG informed by a database of user reviews 
-to create a restaurant-specific recommendation system.
-
+Flavor Finder provides query-specific menu item recommendations from local restaurants. Flavor Finder's recommendations are driven by curated summaries of user-submitted Google reviews.
 
 ## Introduction
 
-Traditionally, recommendation systems have been employed not only to drive commercial 
-success but also to enhance user satisfaction and facilitate exploration in various 
-fields. With the rise of sophisticated data analysis techniques in the 1990s, researchers 
-began utilizing algorithms to analyze user data, creating personalized recommendations 
-based on attributes like preferences, behavior, and feedback. The proliferation of 
-accessible data and advancements in deep learning have transformed recommendation systems 
-into a dynamic and rapidly evolving area of interest among data scientists. In this 
-context, we have developed a recommendation system leveraging RAG (Retrieval-Augmented 
-Generation), informed by a comprehensive database of user reviews, to deliver tailored 
-restaurant-specific suggestions. For instance, this system can provide specific advice 
-such as recommending a spicy yet gluten-free dish at Taj Mahal Indian Restaurant based on user-specific preferences.
+Determing what to order in an unfamiliar restaurant is a challenge. The experiences of others, in the form of restaurant reviews, can be a good guide. However - restaurant reviews are effortful to summarize and difficult to search through when user needs are specific. A recommendation system can help.
+
+Recommendation systems enhance user satisfaction and facilitate exploration. Flavor Finder is a recommendation system that leverages Retrieval-Augmented 
+Generation (RAG), based on a comprehensive database of Google user reviews, to deliver tailored restaurant-specific suggestions. For instance, this system can provide specific advice such as recommending a spicy yet gluten-free dish at Taj Mahal Indian Restaurant based on user-specific preferences.
 
 
 ## Stakeholders
 
-The primary stakeholders of this recommendation system are users seeking specific 
+Flavor Finder has two kinds of stakeholders. The primary stakeholders are dining customers seeking specific 
 dishes from restaurants that cater to their unique preferences and dietary requirements. 
 Leveraging user reviews allows the system to provide personalized recommendations, 
 enhancing the dining experience by suggesting dishes that align with individual tastes 
-and restrictions. For instance, users can receive tailored advice on dishes that are 
-spicy yet gluten-free, ensuring they enjoy meals that meet their expectations and health 
-needs. By utilizing the collective insights from numerous reviews, the system can offer 
-more accurate and reliable recommendations, ultimately benefiting users by saving time, 
+and restrictions. By utilizing the collective insights from numerous reviews of experienced eaters, the system can offer 
+reliable recommendations, benefiting users by saving time, 
 reducing decision fatigue, and increasing satisfaction with their dining choices.
+
+Flavor Finder benefits businesses by streamlining time-costly service worker responsibilities. Flavor Finder's automated recommendation system enables service workers to redistribute effort and resources toward competing demands in high stress and fast-paced restaurant environments.
 
 
 ## Data Collection & Cleaning
