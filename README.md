@@ -1,6 +1,6 @@
-# Flavor-Finder
+# FLAVOR FINDER
 
-# FLAVOR FINDER: A Restaurant-Based Dish Reccomendation System
+# Flavor Finder: A Restaurant-Based Dish Reccomendation System
 
 Flavor Finder provides query-specific menu item recommendations from local restaurants. Flavor Finder's recommendations are driven by curated summaries of user-submitted Google reviews.
 
