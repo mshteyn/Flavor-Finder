@@ -1,6 +1,6 @@
 # Flavor-Finder
 
-#TEAM FLAVOR FINDER: Recommending Restaurant Dishes
+# TEAM FLAVOR FINDER: Recommending Restaurant Dishes
 
 Flavor Finder helps you Find your Favorite Flavor
 
@@ -8,7 +8,7 @@ Our main goal is the implementation of RAG informed by a database of user review
 to create a restaurant-specific recommendation system.
 
 
-##Introduction
+## Introduction
 
 Traditionally, recommendation systems have been employed not only to drive commercial 
 success but also to enhance user satisfaction and facilitate exploration in various 
@@ -23,7 +23,7 @@ restaurant-specific suggestions. For instance, this system can provide specific 
 such as recommending a spicy yet gluten-free dish at Taj Mahal Indian Restaurant based on user-specific preferences.
 
 
-##Stakeholders
+## Stakeholders
 
 The primary stakeholders of this recommendation system are users seeking specific 
 dishes from restaurants that cater to their unique preferences and dietary requirements. 
@@ -36,23 +36,23 @@ more accurate and reliable recommendations, ultimately benefiting users by savin
 reducing decision fatigue, and increasing satisfaction with their dining choices.
 
 
-##Data Collection & Cleaning
+## Data Collection & Cleaning
 
 
 
-###Filter Restaurant Reviews
+### Filter Restaurant Reviews
 
 Reviews were filtered based on high ratings, specifically considering only 4 or 5-star 
 reviews to reduce noise. The original review database was processed in chunks to prevent 
 RAM issues. The current database (~3.5GB) contains approximately 12 million reviews from 
 around 70,000 restaurants.
 
-###Remove Irrelevant Reviews
+### Remove Irrelevant Reviews
 
 Short and excessively long reviews were considered for removal to maintain consistency 
 and relevance.
 
-###Focus on Food-Related Mentions
+### Focus on Food-Related Mentions
 
 To increase the signal-to-noise ratio, reviews that specifically mention food items were 
 selected. A Named Entity Recognition (NER) model (InstaFoodRoBERTa-NER) was employed to 
@@ -60,30 +60,30 @@ identify and filter reviews mentioning food items. This model performed well but
 computationally intensive.
 
 
-##Exploratory Data Analysis
+## Exploratory Data Analysis
 
 
 
-##Modeling Approach
+## Modeling Approach
 
 
 
-##Challenges
+## Challenges
 
 Running some of the models on personal devices took too long to process 100,000 reviews, 
 indicating the need for more powerful computational resources or distributed processing 
 among multiple machines.
 
 
-##Conclusion
+## Conclusion
 
 
 
-##Future Directions
+## Future Directions
 
 
 
-##Repository Description
+## Repository Description
 
 
 
