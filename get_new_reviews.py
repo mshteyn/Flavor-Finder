@@ -106,8 +106,6 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[
                          "rough_address":result["vicinity"]})
     else:
         raise ValueError('Zero Restaurants Founds Within Radius')
-    
-    print("places found",places)
     return places
   
 def get_reviews(places:list[dict])-> list[dict]:
@@ -125,7 +123,7 @@ def get_reviews(places:list[dict])-> list[dict]:
         - A list containing dictionaries; each dictionary is a review with a 
         place_id, as well as text, an author name, and a rating.  
     """
-    
+
     review_collection = list()
 
     for place in places: 
@@ -212,5 +210,8 @@ if __name__ == "__main__":
 
     places = get_nearby_places((lat_example,long_example),radius_example)
     reviews = get_reviews(places)
+    print("Places Gathered",places)
+    print("Reviews Obtained",reviews)
+    
     write_metadata_json(places)
     write_reviews_json(reviews)
