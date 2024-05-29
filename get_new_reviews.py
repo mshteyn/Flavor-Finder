@@ -8,12 +8,15 @@ import os
 import requests 
 import jsonlines 
 import time 
+from outscraper import ApiClient 
 
 assert type(os.environ.get("GOOGLE_PLACES_KEY")) != None, "Must assign environment variable called GOOGLE_PLACES_KEY"
 
 #It is possible, though very bad practice, to hardcode your google places key here 
 
 GOOGLE_PLACES_KEY = os.environ.get("GOOGLE_PLACES_KEY")
+OUTSCRAPER_API_KEY = os.environ.get("OUTSCRAPER_API_KEY")
+
 PLACES_URL_TEMPLATE= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=LAT,LONG&radius=RADIUS&type=TYPE&maxResultCount=MAXCOUNT&key=YOUR_API_KEY"
 REVIEW_URL_TEMPLATE = "https://maps.googleapis.com/maps/api/place/details/json?place_id=PLACE_ID&key=YOUR_API_KEY"
 PLACE_TYPES = ["restaurant","bar","cafe"]
@@ -125,7 +128,7 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(20),expanded 
         if len(response['results']) > 0:
             for result in response['results']: #Iterate over returned places from the url 
                 places.append({"place_id":result["place_id"],"name":result["name"],"avg_rating":result["rating"],"num_of_reviews":result["user_ratings_total"],\
-                                "rough_address":result["vicinity"]})
+                                "types":result["types"],"rough_address":result["vicinity"]})
         else:
             pass 
 
@@ -152,13 +155,26 @@ def get_reviews(places:list[dict])-> list[dict]:
         - A list containing dictionaries; each dictionary is a review with a 
         place_id, as well as text, an author name, and a rating.  
     """
-
+    api_client = ApiClient(api_key=OUTSCRAPER_API_KEY)
     review_collection = list()
     num_calls = int(0)
+
     for place in places: 
         place_id = place["place_id"]
         try:
-            response = requests.get(make_reviews_url(place_id),timeout = 60)
+            should = input('Use outscraper to grab reviews? [y]/n')
+            if 'y' in should:
+                scrape = True 
+            else:
+                scrape = False 
+        
+            if scrape: 
+                
+                results = api_client.google_maps_reviews(place_id, reviews_limit=10)
+
+                print(results)
+                pause = input('continue?')
+            #response = requests.get(make_reviews_url(place_id),timeout = 60)
             assert response.status_code == int(200), "status code was {}".format(response.status_code)
             num_calls += 1 
         except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
@@ -167,6 +183,7 @@ def get_reviews(places:list[dict])-> list[dict]:
         response = response.json() 
         
         all_reviews = response["result"]["reviews"]
+        print("Length of reviews grabbed",len(all_reviews))
 
         for review in all_reviews: #iterate over all reviews for the place with place_id
             short_review = dict()   #short review is the dict containing only relevant information 
