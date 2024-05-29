@@ -36,13 +36,13 @@
 						</div>
 						<div class="card-footer">
 							<form id="messageArea" class="input-group">
-                                <input type="text" id="text" name="msg" placeholder="Start with a restaurant..." autocomplete="off" class="form-control type_msg" required/>
+                                <input type="text" id="text" name="msg" placeholder="Start with your query..." autocomplete="off" class="form-control type_msg" required/>
 								<div class="input-group-append">
 									<button type="submit" id="send1" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
 								</div>
-								<div class="input-group-append">
+								<!-- <div class="input-group-append">
 									<button type="submit" id="send2" class="input-group-text send_btn">Change Restaurant</button>
-								</div>
+								</div> -->
 							</form>
 
 					
@@ -121,14 +121,14 @@
 					}
 				});
 		
-				// Click event for send2 button
-				$("#send2").click(function(event) {
+				// // Click event for send2 button
+				// $("#send2").click(function(event) {
 						
-							i = -1; // Reset the local variable
-							$("#text").attr("placeholder", "Please enter a restaurant...");
+				// 			i = -1; // Reset the local variable
+				// 			$("#text").attr("placeholder", "Please enter a restaurant...");
 	
 					
-				});
+				// });
 			});
 		</script>
         
