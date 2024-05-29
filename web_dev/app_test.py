@@ -8,17 +8,20 @@ from langchain import PromptTemplate
 import pdb
 #import constants
 
+#if a==1:    
 if torch.cuda.is_available():    
     MODEL_NAME = "TheBloke/Llama-2-13b-Chat-GPTQ" # original working model
     #MODEL_NAME = "TechxGenus/Meta-Llama-3-8B-GPTQ" # Llama 3 8B?
-    #MODEL_NAME = "Maykeye/TinyLLama-v0" # this works / Tiny&Fast implementation
+    #MODEL_NAME = "togethercomputer/Llama-2-7B-32K-Instruct"
     
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float16, trust_remote_code=True, device_map="cuda")
     device = torch.device("cuda") 
     print('Cuda is Available. Model is: ', MODEL_NAME)
 else:
-    MODEL_NAME = "microsoft/DialoGPT-medium"
+    #MODEL_NAME = "microsoft/DialoGPT-medium" # mixed reponses
+    #MODEL_NAME = "TheBloke/Llama-2-7B-GGUF" # can't get this to load (MRS 5/29)
+    MODEL_NAME = "togethercomputer/Llama-2-7B-32K-Instruct"
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
     device = torch.device("cpu")
@@ -57,7 +60,9 @@ def chroma_search(query, chroma_dir):
         print('\nThe most relevant reviews are: \n')
         for i, doc in enumerate(docs):
                 print('Review #', i+1, doc.page_content)
+                #context += '' +  doc.page_content + '. '            
                 context += 'Reviewer ' + str(i+1) + ' says: ' +  doc.page_content + '. '
+        print(context)
         return context
 #if you want to do RAG with cloud DB
 def pinecone_search(query, db_dir):
@@ -75,9 +80,9 @@ def pinecone_search(query, db_dir):
             #print('Review #', i+1, doc.page_content)
             #context += 'One reviewer says: ' +  doc.page_content + '. ' #depracated 5/28
             print('Review #', i+1, doc.page_content)
-            context += 'One reviewer says: ' +  doc.page_content + '. '            
+            context += '' +  doc.page_content + '. '            
         else:
-            context += 'Another reviewer says: ' +  doc.page_content + '. '
+            context += '' +  doc.page_content + '. '
             
     return context
 
@@ -123,17 +128,16 @@ def get_Request_response(text):
     search_db = chroma_search # if you want to use the chromadb (local)
     # search_db = pinecone_search #if you want to use the pineconedb (cloud)
 
-    if db_select[0] == 'Y':
+    if db_select[0] == 'Y': # context desired
          chroma_dir = '../scripts/PA_200c_named_db'
          pc_dir = 'pa-db'
          db_dir = pc_dir
          db_dir = chroma_dir
-         pdb.set_trace()        
          context = search_db(query, db_dir)
     else:
         context = ''
 
-    extra_instruction = ". (Answer in just two sentences, maximum, and please summarize the following reviews to guide your answer:)"
+    extra_instruction = ". (Answer in just two sentences, maximum. Avoid answering if the question is not food-related. And please summarize the following reviews to guide your answer:)"
 
     template = """<s>[INST] <<SYS>>"""+query+extra_instruction+"""<</SYS>>{text} [/INST]"""
 
@@ -142,7 +146,7 @@ def get_Request_response(text):
             input_variables=["text"],
             template=template,
         )
-
+    #pdb.set_trace()
     out = llm(prompt.format(text=context))
     return '\n'+out.split('[/INST]  ')[1]
 
