@@ -8,16 +8,31 @@ import time
 
 assert type(os.environ.get("GOOGLE_PLACES_KEY")) != None, "Must set shell environment variable called GOOGLE_PLACES_KEY"
 
+#You can hardcode your google places key if you must; but DO NOT share this document via github 
 GOOGLE_PLACES_KEY = os.environ.get("GOOGLE_PLACES_KEY")
 PLACES_URL_TEMPLATE= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=LAT,LONG&radius=RADIUS&type=TYPE&maxResultCount=MAXCOUNT&key=YOUR_API_KEY"
 REVIEW_URL_TEMPLATE = "https://maps.googleapis.com/maps/api/place/details/json?place_id=PLACE_ID&key=YOUR_API_KEY"
 
 
-def make_places_url(latlong:tuple,radius:str,max_results=int(20),keyword:str = "") -> str:
+def make_places_url(latlong:tuple,radius:str,max_results=int(20)) -> str:
     """
-    latlong: tuple containing (latitude,longitude) of user 
-    radius: search radius in meters  
-    max_results: max number of places to display 
+    Using Google-Places Nearby Search: https://developers.google.com/maps/documentation/places/web-service/nearby-search
+
+    Parameters
+    ---
+    latlong: <tuple> 
+        tuple containing (latitude,longitude) of user 
+    radius: <str> 
+        search radius in meters  
+    max_results: <int>
+         max number of places to display 
+
+    Returns
+    ------
+    
+    url: <str> 
+        exact url to pass requests to in order to get restaurants within radius
+
     """
     lat,long= latlong
     url = PLACES_URL_TEMPLATE.replace("LAT,LONG",str(lat)+","+str(long),1)
@@ -29,9 +44,21 @@ def make_places_url(latlong:tuple,radius:str,max_results=int(20),keyword:str = "
 
 def make_reviews_url(place_id:str) -> str:
     """
-    place_id: unique place id taken from google places; this can be gotten from the 
-    make_places_url function 
+    Using Google-Places Place Details: https://developers.google.com/maps/documentation/places/web-service/place-details
+
+    Parameters
+    ---------
+
+    place_id: <str>
+        unique place id taken from google places; this can be gotten from the 
+
+    Returns
+    ------
+
+    url: <str> 
+        exact url to pass requests to in order to get restaurants within radius
     """
+
     url = REVIEW_URL_TEMPLATE.replace("PLACE_ID",place_id,1)
     url = url.replace("YOUR_API_KEY",GOOGLE_PLACES_KEY,1)
     #url = url.replace("KEYWORD","",1)
@@ -43,18 +70,24 @@ def make_reviews_url(place_id:str) -> str:
 
 def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[dict]: 
     """
-    ---
-    Arguments
-    --- 
-    latlong- <tuple> (latitude,longitude)
-    radius- <str>- search radius around the latlong coordinates in meters (cast as a string)
-    max-places- <int>- max number of places to grab 
 
-    ---
+    Using Google-Places Nearby Search: https://developers.google.com/maps/documentation/places/web-service/nearby-search
+
+    Parameters
+    --- 
+    latlong: <tuple> 
+        (latitude,longitude) cast as strings
+    radius: <str>
+        search radius around the latlong coordinates in meters (cast as a string)
+    max-places: <int>
+        max number of places to grab 
+
     Returns
     ---
-    place_ids: <list> - list containing dictionaries of places and names 
+    place_ids: <list>
+        list containing dictionaries of places and names 
     """
+
     nearby_places_url = make_places_url(latlong,radius) 
 
     try: 
@@ -79,10 +112,20 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[
   
 def get_reviews(places:list[dict])-> list[dict]:
     """
-    arguments
+    Using Google-Places Place Details Function: https://developers.google.com/maps/documentation/places/web-service/place-details
 
-    - places <list> A list of dictionary objects containing at least a valid "place_id"
+    Parameters
+    ----------
+    places: <list> 
+        - A list of dictionary objects containing at least a valid "place_id"
+
+    Returns
+    ------
+    review_collection: <list>[dictionary]
+        - A list containing dictionaries; each dictionary is a review with a 
+        place_id, as well as text, an author name, and a rating.  
     """
+    
     review_collection = list()
 
     for place in places: 
@@ -107,17 +150,25 @@ def get_reviews(places:list[dict])-> list[dict]:
             review_collection.append(short_review)
 
         time.sleep(1) #wait 1 second before calling google places api again 
-    print("reviews collected",review_collection)
+    #print("reviews collected",review_collection)
     return review_collection
 
 
 def write_reviews_json(review_collection:list[dict],filename:str = "new_reviews.jsonl",written_ids=None) -> None:
     """
-    Writes collected reviews to json with name filename;
-    default location is is current working directory
+    Writes collected reviews to a json-lines file (each line is its own json record).
+    The default location is the current working directory. 
+    
+    Parameters
+    -----------
+    review_collection: <list> 
+        list of dictionaries, each of which is a record 
+    filename: <str> 
+        filepath to where jsonl file will be written 
 
-    - Written_ids- list containing review author name and review place_id for reviews which have already been written to file. This 
-    will stop us from duplicating a review which already is written. 
+    Returns
+    ------
+    None
     """ 
     assert len(review_collection) > 0, "review collection must be nonempty list"
     assert type(review_collection[0]) == dict, "review collection be list of dictionary objects"
@@ -132,8 +183,16 @@ def write_metadata_json(places:list[dict],filename="new_metadata.jsonl",written_
     Writes collected place metadata to json with name filename;
     default location is is current working directory
 
-    - Written_ids- list containing review author name and review place_id for reviews which have already been written to file. This 
-    will stop us from duplicating a review which already is written. 
+    Parameters
+    ---------
+    places: <list>
+        - list of dictionaries containing the metadata associated to each unique place 
+    filename: <str> 
+        - filepath to where jsonl file will be written 
+
+    Returns
+    -----
+    None
     """ 
     assert len(places) > 0, "place metadata collection must be nonempty list"
     assert type(places[0]) == dict, "place metadata must be list of dictionary objects"

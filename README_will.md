@@ -1,6 +1,7 @@
 # How To Use Google Places API for Scraping New Views with get_new_reviews.py 
 
-1. Set up Google Places API Key:
+1. Set up Google Places API Key: https://developers.google.com/maps/documentation/places/web-service/overview
+
     - You can set up a google places API key for free- this just requires you to create an account. There is a free $200 monthly credit. 
 
 2. Declare and Assign an Environment Variable Called "GOOGLE_PLACES_KEY"
