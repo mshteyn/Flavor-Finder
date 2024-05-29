@@ -200,8 +200,38 @@ def write_metadata_json(places:list[dict],filename="new_metadata.jsonl",written_
 
     return None 
 
+def locationCoordinates():
+    """
+
+    Parameters
+    ---------- 
+    None 
+
+    Returns
+    ------
+
+
+    """
+    try:
+        response = requests.get('https://ipinfo.io')
+        data = response.json()
+        loc = data['loc'].split(',')
+        lat, long = float(loc[0]), float(loc[1])
+        city = data.get('city', 'Unknown')
+        state = data.get('region', 'Unknown')
+        return lat, long, city, state
+        #return lat, long
+    except:
+        #Displaying ther error message
+        print("Internet Not avialable")
+        #closing the program 
+        exit()
+        return Falses
+
 
 if __name__ == "__main__":
+
+    #lat,long,_,__ = locationCoordintes() 
 
     lat_example = str(33.9164023)  #lat and long example was taken from a restaurant in cali metadata 
     long_example = str(-118.01085499999999)
@@ -212,6 +242,17 @@ if __name__ == "__main__":
     reviews = get_reviews(places)
     print("Places Gathered",places)
     print("Reviews Obtained",reviews)
-    
+
     write_metadata_json(places)
     write_reviews_json(reviews)
+
+
+    #Add restaurant one-off via keyword; maybe make separate place_id functionality
+
+    #List of restaurants to search: 
+    #list of restaurants: ['The Dandelion', 'Shady Maple Smorgasbord', 
+    #'Parc', 'Federal Galley', 'Gaucho Parrilla Argentina', 'Sienna Mercato', 
+    #"Gracie's On West Main", "Del Frisco's Double Eagle Steakhouse", 'The Bayou Southern Kitchen and Bar', 
+    #'NaBrasa Brazilian Steakhouse', 'Salem Halal Market & Grill', "Nifty Fifty's (Northeast Philadelphia)",
+    # 'Frankford Hall', 'Zahav', 'Central Diner & Grille', 'Suraya Restaurant', 'Noodlehead', "Dalessandro's Steaks", 
+    #'Terakawa Ramen', "Monk's Cafe", "Cooper's Seafood House", 'Founding Farmers King of Prussia', 'El Vez', 'Dim Sum Garden',"Pat's King of Steaks"] 
