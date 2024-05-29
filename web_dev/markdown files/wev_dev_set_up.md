@@ -58,3 +58,13 @@
    * SQL with flask: https://www.ffnext.io/blog/python-backend-with-flask-for-beginners
 
 
+## DEPLOYMENT:
+-- Deployment with model:
+   * https://towardsdatascience.com/how-to-deploy-large-size-deep-learning-models-into-production-66b851d17f33
+
+-- Deployment with vector databases: (choices of online ddatabases)
+   * https://aws.amazon.com/free/database/?gclid=CjwKCAjwgdayBhBQEiwAXhMxtvfJwG_ouLnjOtg7Da9atbvd-P7rxrp5NuGPaR8Bnxw9e3hlLXT07RoCjm0QAvD_BwE&trk=38815c3d-dd2c-470a-aad5-ace47ad8c677&sc_channel=ps&ef_id=CjwKCAjwgdayBhBQEiwAXhMxtvfJwG_ouLnjOtg7Da9atbvd-P7rxrp5NuGPaR8Bnxw9e3hlLXT07RoCjm0QAvD_BwE:G:s&s_kwcid=AL!4422!3!646547068069!p!!g!!website%20database!14856489069!134760404864
+   
+-- pinecone
+
+
