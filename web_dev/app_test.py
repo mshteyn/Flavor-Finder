@@ -8,10 +8,7 @@ from langchain import PromptTemplate
 import pdb
 #import constants
 
-a =22
-#if torch.cuda.is_available():
-if a==1:
-    
+if torch.cuda.is_available():    
     MODEL_NAME = "TheBloke/Llama-2-13b-Chat-GPTQ" # original working model
     #MODEL_NAME = "TechxGenus/Meta-Llama-3-8B-GPTQ" # Llama 3 8B?
     #MODEL_NAME = "Maykeye/TinyLLama-v0" # this works / Tiny&Fast implementation
