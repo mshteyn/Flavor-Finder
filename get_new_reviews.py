@@ -1,20 +1,24 @@
-#This is a script to scrape fresh reviews from the google places API by using the find-nearby functionality
 
+"""
+Will Porteous, 05/29/24 
+#This is a script to scrape fresh restaurant reviews from the google places API by using the find-nearby functionality
+"""
 
 import os 
 import requests 
 import jsonlines 
 import time 
 
-assert type(os.environ.get("GOOGLE_PLACES_KEY")) != None, "Must set shell environment variable called GOOGLE_PLACES_KEY"
+assert type(os.environ.get("GOOGLE_PLACES_KEY")) != None, "Must assign environment variable called GOOGLE_PLACES_KEY"
 
-#You can hardcode your google places key if you must; but DO NOT share this document via github 
+#It is possible, though very bad practice, to hardcode your google places key here 
+
 GOOGLE_PLACES_KEY = os.environ.get("GOOGLE_PLACES_KEY")
 PLACES_URL_TEMPLATE= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=LAT,LONG&radius=RADIUS&type=TYPE&maxResultCount=MAXCOUNT&key=YOUR_API_KEY"
 REVIEW_URL_TEMPLATE = "https://maps.googleapis.com/maps/api/place/details/json?place_id=PLACE_ID&key=YOUR_API_KEY"
+PLACE_TYPES = ["restaurant","bar","cafe"]
 
-
-def make_places_url(latlong:tuple,radius:str,max_results=int(20)) -> str:
+def make_places_url(latlong:tuple,radius:str,type="restaurant",max_results=int(20)) -> str:
     """
     Using Google-Places Nearby Search: https://developers.google.com/maps/documentation/places/web-service/nearby-search
 
@@ -26,20 +30,27 @@ def make_places_url(latlong:tuple,radius:str,max_results=int(20)) -> str:
         search radius in meters  
     max_results: <int>
          max number of places to display 
+    type: <str>
+        must be supported option from 
+        https://developers.google.com/maps/documentation/places/web-service/supported_types
 
     Returns
     ------
     
     url: <str> 
+        
         exact url to pass requests to in order to get restaurants within radius
 
     """
+    assert type in PLACE_TYPES, "invalid type choice: <type> must be one of {}".format(PLACE_TYPES)
+
     lat,long= latlong
     url = PLACES_URL_TEMPLATE.replace("LAT,LONG",str(lat)+","+str(long),1)
-    url = url.replace("TYPE","restaurant",1)
+    url = url.replace("TYPE",type,1)
     url = url.replace("RADIUS",str(radius),1)
     url = url.replace("MAXCOUNT",str(max_results),1)
     url = url.replace("YOUR_API_KEY",GOOGLE_PLACES_KEY,1)
+
     return url 
 
 def make_reviews_url(place_id:str) -> str:
@@ -68,7 +79,7 @@ def make_reviews_url(place_id:str) -> str:
 # ad = '3400 san pablo ave, oakland, ca 946084234' # this address works
 # address = ad.replace(' ', '%20') #make sure there are no blank spaces for the URL
 
-def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[dict]: 
+def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(20),expanded = False) -> list[dict]: 
     """
 
     Using Google-Places Nearby Search: https://developers.google.com/maps/documentation/places/web-service/nearby-search
@@ -81,6 +92,8 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[
         search radius around the latlong coordinates in meters (cast as a string)
     max-places: <int>
         max number of places to grab 
+    expanded: <bool>
+        increase number of types of places from restaurant to all types in PLACE_TYPES
 
     Returns
     ---
@@ -88,25 +101,41 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(10)) -> list[
         list containing dictionaries of places and names 
     """
 
-    nearby_places_url = make_places_url(latlong,radius) 
-
-    try: 
-        response = requests.get(nearby_places_url,timeout= int(60))
-        assert response.status_code == int(200), "status code was {}".format(response.status_code)
-    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError) as err_msg:
-            print(err_msg)
-
-    response = response.json() 
+    types_to_use = ["restaurant"]
     places = list()
+    num_calls = int(0)
 
-    #Form the json of nearby requested places 
-    if len(response['results']) > 0:
-      for result in response['results']: #Iterate over returned restaurants from the url 
-          places.append({"place_id":result["place_id"],"name":result["name"],"avg_rating":result["rating"],"num_of_reviews":result["user_ratings_total"],\
-                         "rough_address":result["vicinity"]})
-    else:
-        raise ValueError('Zero Restaurants Founds Within Radius')
-    return places
+    if expanded: 
+        types_to_use = PLACE_TYPES.copy() #iterate over PLACE_TYPES 
+
+    for place_type in types_to_use: 
+
+        nearby_places_url = make_places_url(latlong,radius,type = place_type) 
+
+        try: 
+            response = requests.get(nearby_places_url,timeout= int(60))
+            assert response.status_code == int(200), "status code was {}".format(response.status_code)
+            num_calls += 1 
+        except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError) as err_msg:
+                print(err_msg)
+
+        response = response.json() 
+    
+        #Form the json of nearby requested places 
+        if len(response['results']) > 0:
+            for result in response['results']: #Iterate over returned places from the url 
+                places.append({"place_id":result["place_id"],"name":result["name"],"avg_rating":result["rating"],"num_of_reviews":result["user_ratings_total"],\
+                                "rough_address":result["vicinity"]})
+        else:
+            pass 
+
+    assert len(places) > 0, "list of places fails len(places) > 0"
+
+    # while "next_page_token" in response: 
+    #     next_page_token = response["next_page_token"]
+
+    return places, num_calls 
+
   
 def get_reviews(places:list[dict])-> list[dict]:
     """
@@ -125,12 +154,13 @@ def get_reviews(places:list[dict])-> list[dict]:
     """
 
     review_collection = list()
-
+    num_calls = int(0)
     for place in places: 
         place_id = place["place_id"]
         try:
             response = requests.get(make_reviews_url(place_id),timeout = 60)
             assert response.status_code == int(200), "status code was {}".format(response.status_code)
+            num_calls += 1 
         except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
             print("Request Error")
 
@@ -138,18 +168,18 @@ def get_reviews(places:list[dict])-> list[dict]:
         
         all_reviews = response["result"]["reviews"]
 
-        for review in all_reviews: #iterate over all reviews for the place with place_id; append to review_collection 
-            short_review = dict()
+        for review in all_reviews: #iterate over all reviews for the place with place_id
+            short_review = dict()   #short review is the dict containing only relevant information 
             short_review["place_id"] = place["place_id"]
             short_review["rating"] = review["rating"]
             short_review["text"] = review["text"]
             short_review["relative_time_description"] = review["relative_time_description"]
 
-            review_collection.append(short_review)
+            review_collection.append(short_review) #add short review to the collection 
 
         time.sleep(1) #wait 1 second before calling google places api again 
-    #print("reviews collected",review_collection)
-    return review_collection
+
+    return review_collection, num_calls 
 
 
 def write_reviews_json(review_collection:list[dict],filename:str = "new_reviews.jsonl",written_ids=None) -> None:
@@ -202,7 +232,6 @@ def write_metadata_json(places:list[dict],filename="new_metadata.jsonl",written_
 
 def locationCoordinates():
     """
-
     Parameters
     ---------- 
     None 
@@ -210,10 +239,9 @@ def locationCoordinates():
     Returns
     ------
 
-
     """
     try:
-        response = requests.get('https://ipinfo.io')
+        response = requests.get('https://ipinfo.io') #just grab your ip info from website rather than access PC info 
         data = response.json()
         loc = data['loc'].split(',')
         lat, long = float(loc[0]), float(loc[1])
@@ -222,9 +250,7 @@ def locationCoordinates():
         return lat, long, city, state
         #return lat, long
     except:
-        #Displaying ther error message
         print("Internet Not avialable")
-        #closing the program 
         exit()
         return Falses
 
@@ -233,26 +259,32 @@ if __name__ == "__main__":
 
     #lat,long,_,__ = locationCoordintes() 
 
-    lat_example = str(33.9164023)  #lat and long example was taken from a restaurant in cali metadata 
-    long_example = str(-118.01085499999999)
-    radius_example = str(10) #radius in meters 
+    lat_example = str(40.4659334342321)  #lat and long example was taken from Apteka restaurant 
+    long_example = str(-79.94937925548174)
+    radius_example = str(20) #radius in meters 
     MAX_PLACES = int(20)
 
-    places = get_nearby_places((lat_example,long_example),radius_example)
-    reviews = get_reviews(places)
-    print("Places Gathered",places)
-    print("Reviews Obtained",reviews)
+    places,num_nearby_calls = get_nearby_places((lat_example,long_example),radius_example,max_places = MAX_PLACES,expanded = True)
+    reviews,num_details_calls = get_reviews(places)
+    print(reviews)
 
-    write_metadata_json(places)
-    write_reviews_json(reviews)
+    print("{} Places Gathered in {} Calls to Nearby Search".format(len(places),num_nearby_calls))
 
+    print("{} Reviews Gathered in {} Calls to Place Details".format(len(reviews),num_details_calls))
+
+    #print("Reviews Obtained",reviews)
+
+    write_metadata_json(places,"metadata_near_apteka.jsonl")
+    write_reviews_json(reviews,"reviews_near_apteka.jsonl")
 
     #Add restaurant one-off via keyword; maybe make separate place_id functionality
-
-    #List of restaurants to search: 
-    #list of restaurants: ['The Dandelion', 'Shady Maple Smorgasbord', 
-    #'Parc', 'Federal Galley', 'Gaucho Parrilla Argentina', 'Sienna Mercato', 
-    #"Gracie's On West Main", "Del Frisco's Double Eagle Steakhouse", 'The Bayou Southern Kitchen and Bar', 
-    #'NaBrasa Brazilian Steakhouse', 'Salem Halal Market & Grill', "Nifty Fifty's (Northeast Philadelphia)",
-    # 'Frankford Hall', 'Zahav', 'Central Diner & Grille', 'Suraya Restaurant', 'Noodlehead', "Dalessandro's Steaks", 
-    #'Terakawa Ramen', "Monk's Cafe", "Cooper's Seafood House", 'Founding Farmers King of Prussia', 'El Vez', 'Dim Sum Garden',"Pat's King of Steaks"] 
+    
+    """
+    List of restaurants to search: 
+    list of restaurants: ['The Dandelion', 'Shady Maple Smorgasbord', 
+    'Parc', 'Federal Galley', 'Gaucho Parrilla Argentina', 'Sienna Mercato', 
+    "Gracie's On West Main", "Del Frisco's Double Eagle Steakhouse", 'The Bayou Southern Kitchen and Bar', 
+    'NaBrasa Brazilian Steakhouse', 'Salem Halal Market & Grill', "Nifty Fifty's (Northeast Philadelphia)",
+    'Frankford Hall', 'Zahav', 'Central Diner & Grille', 'Suraya Restaurant', 'Noodlehead', "Dalessandro's Steaks", 
+    'Terakawa Ramen', "Monk's Cafe", "Cooper's Seafood House", 'Founding Farmers King of Prussia', 'El Vez', 'Dim Sum Garden',"Pat's King of Steaks"] 
+    """
