@@ -140,7 +140,7 @@ def get_nearby_places(latlong:tuple[str],radius:str,max_places=int(20),expanded 
     return places, num_calls 
 
   
-def get_reviews(places:list[dict])-> list[dict]:
+def get_reviews(places:list[dict],limit = int(100))-> list[dict]:
     """
     Using Google-Places Place Details Function: https://developers.google.com/maps/documentation/places/web-service/place-details
 
@@ -161,36 +161,36 @@ def get_reviews(places:list[dict])-> list[dict]:
 
     for place in places: 
         place_id = place["place_id"]
-        try:
-            should = input('Use outscraper to grab reviews? [y]/n')
-            if 'y' in should:
-                scrape = True 
-            else:
-                scrape = False 
-        
-            if scrape: 
-                
-                results = api_client.google_maps_reviews(place_id, reviews_limit=10)
-
-                print(results)
-                pause = input('continue?')
-            #response = requests.get(make_reviews_url(place_id),timeout = 60)
-            assert response.status_code == int(200), "status code was {}".format(response.status_code)
+        #try:
+        should = input('Use outscraper to grab reviews? [y]/n')
+        if 'y' in should:
+            scrape = True 
+        else:
+            scrape = False 
+    
+        if scrape: 
+            results = api_client.google_maps_reviews(place_id, reviews_limit=limit)
             num_calls += 1 
-        except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
-            print("Request Error")
 
-        response = response.json() 
+            all_reviews = results[0]["reviews_data"] 
+        #response = requests.get(make_reviews_url(place_id),timeout = 60)
+        #assert response.status_code == int(200), "status code was {}".format(response.status_code)
+        num_calls += 1 
+       # except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
+        #    print("Request Error")
+
+        #response = response.json() 
         
-        all_reviews = response["result"]["reviews"]
-        print("Length of reviews grabbed",len(all_reviews))
+        #all_reviews = response["result"]["reviews"]
+
+        #print("Length of reviews grabbed",len(all_reviews))
 
         for review in all_reviews: #iterate over all reviews for the place with place_id
             short_review = dict()   #short review is the dict containing only relevant information 
             short_review["place_id"] = place["place_id"]
-            short_review["rating"] = review["rating"]
-            short_review["text"] = review["text"]
-            short_review["relative_time_description"] = review["relative_time_description"]
+            short_review["rating"] = review["review_rating"]
+            short_review["text"] = review["review_text"]
+            #short_review["relative_time_description"] = review["relative_time_description"]
 
             review_collection.append(short_review) #add short review to the collection 
 
@@ -280,10 +280,9 @@ if __name__ == "__main__":
     long_example = str(-79.94937925548174)
     radius_example = str(20) #radius in meters 
     MAX_PLACES = int(20)
-
+    review_limit = int(1500)
     places,num_nearby_calls = get_nearby_places((lat_example,long_example),radius_example,max_places = MAX_PLACES,expanded = True)
-    reviews,num_details_calls = get_reviews(places)
-    print(reviews)
+    reviews,num_details_calls = get_reviews(places,review_limit)
 
     print("{} Places Gathered in {} Calls to Nearby Search".format(len(places),num_nearby_calls))
 
