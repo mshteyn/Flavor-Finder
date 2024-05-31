@@ -57,6 +57,8 @@ Text reviews were embedded as 1024 dimensional vectors using Alibaba's sentence 
 
 ## Model Evaluation
 
+<img width="610" alt="image" src="https://github.com/mshteyn/Flavor-Finder/evals/Evaluation.png">
+
 We evaluated 20 local restaurants representing a variety of cuisines, including Italian, Maxican, Chinese, and more. each with >100 reviews. For each restaurant, customized questions were posed to assess dish recommendations. Example questions include:
 - "If I want the best sandwich, what should I get at Central Diner & Grille?"
 - "I don't like mushrooms, what dish do you recommend at Vedge?"
