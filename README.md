@@ -1,7 +1,7 @@
 # FLAVOR FINDER
 
 # Flavor Finder: A Restaurant-Based Dish Recomendation System
-<img width="610" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/ab668f9f-e619-4e77-a6a0-8f939bce1012">
+<img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/ab668f9f-e619-4e77-a6a0-8f939bce1012">
 
 
 Flavor Finder provides query-specific menu item recommendations from local restaurants. Flavor Finder's recommendations are driven by curated summaries of user-submitted Google reviews.
@@ -51,8 +51,6 @@ identify and filter reviews containing specific mention of food items.
 <img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/b81f3412-1321-4985-a996-16e6005904f4">
 
 
-<img width="417" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/1f94619f-a02e-4a08-a662-10c69de33312">
-
 
 ## Modeling Approach
 
@@ -60,10 +58,10 @@ Text reviews were embedded as 1024 dimensional vectors using Alibaba's sentence 
 
 ## Model Evaluation
 
-![Uploading image.png…]()
+<img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/1f94619f-a02e-4a08-a662-10c69de33312">
 
 
-<img width="800" alt="image" src="https://github.com/mshteyn/Flavor-Finder/blob/main/evals/Evaluation.png?raw=true">
+<img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/blob/main/evals/Evaluation.png?raw=true">
 
 We evaluated 20 local restaurants representing a variety of cuisines, including Italian, Maxican, Chinese, and more. each with >100 reviews. For each restaurant, customized questions were posed to assess dish recommendations. Example questions include:
 - "If I want the best sandwich, what should I get at Central Diner & Grille?"
