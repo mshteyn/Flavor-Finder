@@ -48,7 +48,9 @@ identify and filter reviews containing specific mention of food items.
 
 
 ## Exploratory Data Analysis
+![image](https://github.com/mshteyn/Flavor-Finder/assets/5659756/85a10095-470f-48dd-be71-b8ff7022d907)
 
+<img width="417" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/1f94619f-a02e-4a08-a662-10c69de33312">
 
 
 ## Modeling Approach
@@ -56,6 +58,9 @@ identify and filter reviews containing specific mention of food items.
 Text reviews were embedded as 1024 dimensional vectors using Alibaba's sentence transformer model (GTE-Large v1.5) and stored in a Pinecone vector database. User queries were embedded in the same way and compared to stored embeddings with cosine similarity. The top 5 closest reviews to the user query were retreived from the database and provided the context with which Llama 2 (13B Instruction-tuned) was prompted before generating a response to the user query.
 
 ## Model Evaluation
+
+![Uploading image.png…]()
+
 
 <img width="800" alt="image" src="https://github.com/mshteyn/Flavor-Finder/blob/main/evals/Evaluation.png?raw=true">
 
