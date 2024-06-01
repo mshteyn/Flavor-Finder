@@ -1,6 +1,9 @@
 # FLAVOR FINDER
 
 # Flavor Finder: A Restaurant-Based Dish Recomendation System
+![FF_gif_crop3](https://github.com/mshteyn/Flavor-Finder/assets/5659756/558df18a-002f-4898-802e-c6df198492aa)
+
+
 <p align="center">!![FF_gif_crop3](https://github.com/mshteyn/Flavor-Finder/assets/5659756/44590f49-e7ae-44e5-81e2-4bee15245769)</p>
 
 <p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/ab668f9f-e619-4e77-a6a0-8f939bce1012"></p>
