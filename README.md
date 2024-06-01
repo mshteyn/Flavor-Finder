@@ -4,8 +4,6 @@
 ![FF_gif_crop3](https://github.com/mshteyn/Flavor-Finder/assets/5659756/558df18a-002f-4898-802e-c6df198492aa)
 
 
-<p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/ab668f9f-e619-4e77-a6a0-8f939bce1012"></p>
-
 
 Flavor Finder provides query-specific menu item recommendations from local restaurants. Flavor Finder's recommendations are driven by curated summaries of user-submitted Google reviews.
 
