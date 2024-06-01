@@ -37,7 +37,10 @@ These data are made public at https://datarepo.eng.ucsd.edu/mcauley_group/gdrive
 
 ### Data Cleaning and Preprocessing
 
-Reviews were filtered based on high ratings, considering only reviews rated at 3 stars out of 5 or better. Reviews fewer than 200 characters in length were removed. 
+
+Reviews were filtered based on high ratings, considering only reviews rated at 4 stars out of 5 or better to highlight positive dining experiences. We only considered reviews with at least 200 characters in length and with less than 1000 characters to reduce noise from reviews that might otherwise focus on aspects such as ambiance or service. 
+
+
 
 ### Focus on Food-Related Mentions
 
