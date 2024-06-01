@@ -48,7 +48,8 @@ identify and filter reviews containing specific mention of food items.
 
 
 ## Exploratory Data Analysis
-![image](https://github.com/mshteyn/Flavor-Finder/assets/5659756/85a10095-470f-48dd-be71-b8ff7022d907)
+<img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/b81f3412-1321-4985-a996-16e6005904f4">
+
 
 <img width="417" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/1f94619f-a02e-4a08-a662-10c69de33312">
 
