@@ -75,7 +75,7 @@ Flavor-Finder achieved an average score of 3.1 out of 4, outperforming the origi
 
 Significant GPU resources are required to load the necessary components of the model.
 
-Updating our vector database requires access to ubscription-based Google API keys which were beyond our budget. We've developed a tool that enables live scrapping of the Google Local API to perform this update but it is beyond the financial scope to subsidize that functionality at this time.
+Updating our vector database requires access to ubscription-based Google API keys which were beyond our budget. We've developed a tool that enables live scrapping of the Google Local API to perform this update but it is beyond the financial scope to subsidize that functionality at this time. As a result, our vector database is necessarily dated by the age of the dataset we had access to, containing reviews through 2020.
 
 
 ## Conclusion
