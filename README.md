@@ -54,9 +54,10 @@ Our final database consisted of 190,000 restaurant reviews from over 20,000 inde
 
 ## Exploratory Data Analysis
 <p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/b81f3412-1321-4985-a996-16e6005904f4"></p>
+
 A visualization of restaurants in the Philadelphia area sorted by how many times they have been reviewed by users through the Google Local API.
 
-![image](https://github.com/mshteyn/Flavor-Finder/assets/5659756/68757978-b769-4d33-b440-606f6d24fff3)
+<p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/68757978-b769-4d33-b440-606f6d24fff3"></p>
 
 A histogram depicting the lenghts of reviews stored in our vector database.
 
