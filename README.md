@@ -89,12 +89,10 @@ Significant GPU resources are required to load the necessary components of the m
 Updating the vector database requires access to subscription-based Google API keys which were beyond our budget. We've developed a tool that enables live scrapping of the Google Local API to perform database updates which we have updated within the limits of free use. As a result, our vector database is necessarily dated by the age of the dataset we had access to, containing reviews through 2020.
 
 
-## Conclusion
-
-
 
 ## Future Directions
 
+We are in the process of deploying the model for user testing and integrating live API calls to both update our vector store and enhance retreival.
 
 
 ## Repository Description
