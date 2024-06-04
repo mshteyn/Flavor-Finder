@@ -11,7 +11,7 @@ Flavor Finder provides query-specific menu item recommendations from local resta
 
 Determing what to order in an unfamiliar restaurant is a challenge. Though restaurant reviews can be a good guide, they are effortful to summarize and difficult to search through when user needs are specific. A recommendation system can help.
 
-Flavor Finder is a recommendation system that leverages Retrieval-Augmented Generation (RAG), based on a comprehensive database of Google user reviews, to deliver tailored restaurant-specific suggestions. For instance, this system can provide specific advice such as recommending a spicy yet gluten-free dish at Taj Mahal Indian Restaurant based on user-specific preferences, or a vegetarian appetizer at Noodlehead.
+Flavor Finder is a chat-based recommendation system that leverages Retrieval-Augmented Generation (RAG), based on a comprehensive database of Google user reviews, to deliver tailored restaurant-specific suggestions. For instance, Flavor Finder can provide a natural language based recommendation for a vegetarian appetizer at Noodlehead or a chicken-based entree at Sichuan Gourmet.
 
 
 ## Stakeholders
