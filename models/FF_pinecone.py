@@ -1,3 +1,10 @@
+"""
+ This program accepts a natural language text input about restaurants in PA, retrieves the top-k similar google reviews to the user query from a vector store, and appends them as context that Llama-2-GPTQ uses to generate a response. Both cloud vector store (Pinecone, with a valid API key) and local vector store (Chroma) are compatible. Pinecone is the default set. 
+
+CUDA required for timely inference.
+"""
+
+
 import pdb
 import torch
 import os
@@ -18,10 +25,9 @@ warnings.filterwarnings("ignore")
 if torch.cuda.is_available():     
     MODEL_NAME = "TheBloke/Llama-2-13b-Chat-GPTQ"
     #MODEL_NAME =  "togethercomputer/Llama-2-7B-32K-Instruct" # Really long to load
-    #MODEL_NAME ="TechxGenus/Meta-Llama-3-8B-GPTQ"    # This model works but talks to itself
+    #MODEL_NAME ="TechxGenus/Meta-Llama-3-8B-GPTQ"    # works but talks to itself
     #MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
     #MODEL_NAME = "TechxGenus/Meta-Llama-3-8B-GPTQ" 
-    #MODEL_NAME = "Maykeye/TinyLLama-v0"    
     #tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True, token='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')
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
 
@@ -31,7 +37,6 @@ if torch.cuda.is_available():
 else:
 
     #MODEL_NAME = "TheBloke/Llama-2-7B-GGML"
-    #pdb.set_trace()    
     #MODEL_NAME = "Maykeye/TinyLLama-v0" # this works / Tiny&Fast implementation -- Terrible Output
     MODEL_NAME = "togethercomputer/Llama-2-7B-32K-Instruct" 
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, use_fast=True)
@@ -107,9 +112,9 @@ def take_query():
     db_select = db_select.upper()
 
     # chroma DB
-    search_db = chroma_search
+    #search_db = chroma_search
     # pinecone DB
-    #search_db = pinecone_search
+    search_db = pinecone_search
 
     if db_select[0] == 'Y':
     #    chroma_dir = './OH_200c_named_db'
@@ -136,11 +141,7 @@ def take_query():
         template=template,
     )
 
-    #context = input("What other reviewers are saying: ")
-    #text = "Give me a recommendation for light dish at Apteka"
-
     out = llm(prompt.format(text=context))
-    pdb.set_trace()
     print('\n'+out.split('[/INST]  ')[1])
 
 
@@ -148,15 +149,5 @@ def take_query():
 exit = 0
 while (exit ==0):
     take_query()
-
-pdb.set_trace()
-
-
-
-
-#from langchain.chains import LLMChain
-#chain = LLMChain(llm=llm, prompt=prompt)
-#result = chain.run(text)
-#print(result)
 
 
