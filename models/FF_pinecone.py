@@ -97,13 +97,12 @@ def pinecone_search(query, db_dir):
 
 from langchain import PromptTemplate
 
-def take_query(text):
-    print(text)
-    query = text
-    #query = input("\n\n\nWhat kind of food recommendation would you like?:  ")
+def take_query():
 
-    #db_select = input('\nWould you like a recommendation based on user reviews? Type: \n"Yes" to consult our curated review database, or \n"No" to ignore user reviews: ')
-    db_select = 'N'
+    query = input("\n\n\nWhat kind of food recommendation would you like?:  ")
+
+    db_select = input('\nWould you like a recommendation based on user reviews? Type: \n"Yes" to consult our curated review database, or \n"No" to ignore user reviews: ')
+
 
     db_select = db_select.upper()
 
@@ -126,8 +125,8 @@ def take_query(text):
         context = search_db(db_dir)
     else:
         context = ''
-
-    extra_instruction = ". (Answer in just two sentences maximum, using the following context in generating your answer, without mentioning the reviewer identity:)"
+    extra_instruction = ". If the question is not food-related, avoid answering. If the question is food related, answer in just two sentences maximum, using the following context in generating your answer, without mentioning the reviewer identity:"
+ #   extra_instruction = ".  (Answer in just two sentences maximum, using the following context in generating your answer, without mentioning the reviewer identity:)"
 
     template = """<s>[INST] <<SYS>>"""+query+extra_instruction+"""<</SYS>>{text} [/INST]"""
 
@@ -141,29 +140,16 @@ def take_query(text):
     #text = "Give me a recommendation for light dish at Apteka"
 
     out = llm(prompt.format(text=context))
-    #pdb.set_trace()
+    pdb.set_trace()
     print('\n'+out.split('[/INST]  ')[1])
-    return out
 
-#evaluation script
-eval_queries_path = 'eval_list2.pkl'
-#eval_out_path = 'eval_out_k5_2.pkl' 
-eval_out_path = 'eval_out_naive_rd2.pkl' 
-import pickle
-#load evaluation queries
-with open(eval_queries_path, 'rb') as f:
-    eval_list = pickle.load(f)
 
-#eval_list = eval_list[34:]
 
-outputs, contexts = [], []
-for query in eval_list:
-    out = take_query(query)
-    outputs.append(out.split('[/INST]  ')[1])
-    contexts.append(out.split('<</SYS>>')[1])
-    data = {'outputs': outputs, 'contexts': contexts}
-    with open(eval_out_path, 'wb') as f:
-        pickle.dump(data, f)
+exit = 0
+while (exit ==0):
+    take_query()
+
+pdb.set_trace()
 
 
 
