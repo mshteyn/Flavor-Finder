@@ -55,15 +55,19 @@ Our final database consisted of 190,000 restaurant reviews from over 20,000 inde
 ## Exploratory Data Analysis
 <p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/b81f3412-1321-4985-a996-16e6005904f4"></p>
 
-A visualization of restaurants in the Philadelphia area sorted by how many times they have been reviewed by users through the Google Local API.
+Visualization of restaurants in the Philadelphia area sorted by how many times they have been reviewed by users through the Google Local API.
 
 <p align="center"><img width="595" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/68757978-b769-4d33-b440-606f6d24fff3"></p>
 
-A histogram depicting the lenghts of reviews stored in our vector database.
+Histogram depicts the lenghts of reviews stored in our vector database.
 
 ## Modeling Approach
 
 Text reviews were embedded as 1024 dimensional vectors using Alibaba's sentence transformer model (GTE-Large v1.5) and stored in a Pinecone vector database. User queries were embedded at runtime and compared to stored embeddings with cosine similarity. The top 5 closest reviews to the user query were retreived from the database and provided the context with which Llama 2 (13B Instruction-tuned) was prompted before generating a response to the user query.
+
+<p align="center"><img width="795" alt="image" src="https://github.com/mshteyn/Flavor-Finder/assets/5659756/db1b84ab-03ac-4e76-bce6-560095833834"></p>
+
+Worflow.
 
 ## Model Evaluation
 
@@ -84,7 +88,7 @@ Flavor-Finder achieved an average score of 3.1 out of 4, outperforming the origi
 
 ## Challenges
 
-Significant GPU resources are required to load the necessary components of the model.
+GPU resources are required to perform inference efficient.
 
 Updating the vector database requires access to subscription-based Google API keys which were beyond our budget. We've developed a tool that enables live scrapping of the Google Local API to perform database updates which we have updated within the limits of free use. As a result, our vector database is necessarily dated by the age of the dataset we had access to, containing reviews through 2020.
 
